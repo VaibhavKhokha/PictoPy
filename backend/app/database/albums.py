@@ -95,7 +95,7 @@ def db_insert_album(
     cursor = conn.cursor()
     try:
         password_hash = None
-        if password:
+        if password and password.strip():
             password_hash = bcrypt.hashpw(
                 password.encode("utf-8"), bcrypt.gensalt()
             ).decode("utf-8")
@@ -122,10 +122,14 @@ def db_update_album(
     cursor = conn.cursor()
     try:
         if password is not None:
+
+            password_hash = None
+
+            if password.strip():
             # Update with new password
-            password_hash = bcrypt.hashpw(
-                password.encode("utf-8"), bcrypt.gensalt()
-            ).decode("utf-8")
+                password_hash = bcrypt.hashpw(
+                    password.encode("utf-8"), bcrypt.gensalt()
+                ).decode("utf-8")
             cursor.execute(
                 """
                 UPDATE albums

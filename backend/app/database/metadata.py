@@ -69,13 +69,15 @@ def db_update_metadata(
         True if the metadata was updated, False otherwise
     """
     own_connection = cursor is None
+    conn: Optional[sqlite3.Connection] = None
     if own_connection:
         conn = sqlite3.connect(DATABASE_PATH)
         cursor = conn.cursor()
 
+    if not cursor:
+        return False
+
     try:
-        if cursor is None:
-            return False
 
         metadata_json = json.dumps(metadata)
 
@@ -94,5 +96,5 @@ def db_update_metadata(
         print(f"Error updating metadata: {e}")
         raise
     finally:
-        if own_connection:
+        if own_connection and conn:
             conn.close()
