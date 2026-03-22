@@ -74,6 +74,9 @@ def db_update_metadata(
         cursor = conn.cursor()
 
     try:
+        if cursor is None:
+            return False
+
         metadata_json = json.dumps(metadata)
 
         # Delete all existing rows and insert new one
@@ -81,7 +84,7 @@ def db_update_metadata(
         cursor.execute("INSERT INTO metadata (metadata) VALUES (?)", (metadata_json,))
 
         success = cursor.rowcount > 0
-        if own_connection:
+        if own_connection and conn:
             conn.commit()
         return success
     except Exception as e:

@@ -89,7 +89,7 @@ def db_insert_album(
     album_name: str,
     description: str = "",
     is_hidden: bool = False,
-    password: str = None,
+    password: str | None = None,
 ):
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
@@ -116,7 +116,7 @@ def db_update_album(
     album_name: str,
     description: str,
     is_hidden: bool,
-    password: str = None,
+    password: str | None = None,
 ):
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
